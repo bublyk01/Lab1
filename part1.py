@@ -82,7 +82,7 @@ if __name__ == "__main__":
 
     choice = input("Do you want to enter your own transformation matrix? ").strip().lower()
 
-    if choice == 'yes':
+    if choice == "yes":
         custom_matrix = []
         print("Enter your transformation matrix (2x2):")
         for i in range(2):
