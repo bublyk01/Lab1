@@ -19,7 +19,7 @@ class Matrix:
         self.matrix = np.array([[a, b], [c, d]])
 
     def transform(self, vector):
-        result = self.matrix @ vector.to_array()
+        result = self.matrix @ vector.array_convert()
         return Vector(result[0], result[1])
 
     def points_transform(self, points):
@@ -35,7 +35,7 @@ class Shape:
         self.points = np.array(points)
 
     def transform(self, matrix):
-        transformed_points = matrix.apply_to_points(self.points)
+        transformed_points = matrix.points_transform(self.points)
         return Shape(transformed_points)
 
     def plot(self, ax, **kwargs):
@@ -44,3 +44,19 @@ class Shape:
 
     def __repr__(self):
         return f"Shape(points={self.points})"
+
+
+if __name__ == "__main__":
+    batman_points = np.array([[0, 0], [1, 0.2], [0.4, 1], [0.5, 0.4], [0, 0.8], [-0.5, 0.4], [-0.4, 1], [-1, 0.2], [0, 0]])
+    batman_shape = Shape(batman_points)
+
+    rotation_matrix = Matrix(0, -1, 1, 0)
+
+    transformed_batman_shape = batman_shape.transform(rotation_matrix)
+
+    fig, ax = plt.subplots()
+    batman_shape.plot(ax, color='yellow', label='Initial shape')
+    transformed_batman_shape.plot(ax, color='red', label='Transformed shape')
+    ax.set_aspect('equal')
+    ax.legend()
+    plt.show()
