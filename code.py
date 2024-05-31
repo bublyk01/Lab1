@@ -15,11 +15,18 @@ class Vector:
 
 
 class Matrix:
-    def __init__(self, angle_deg, scale):
+    def __init__(self, angle_deg, scale, mirror_axis):
         angle_rad = np.deg2rad(angle_deg)
         cos_angle = np.cos(angle_rad)
         sin_angle = np.sin(angle_rad)
-        self.matrix = np.array([[cos_angle * scale, -sin_angle * scale], [sin_angle * scale, cos_angle * scale]])
+        if mirror_axis == 'x':
+            self.matrix = np.array([[cos_angle * scale, sin_angle * scale], [sin_angle * scale, -cos_angle * scale]])
+        elif mirror_axis == 'y':
+            self.matrix = np.array([[-cos_angle * scale, -sin_angle * scale], [-sin_angle * scale, cos_angle * scale]])
+        elif mirror_axis == 'none':
+            self.matrix = np.array([[cos_angle * scale, -sin_angle * scale], [sin_angle * scale, cos_angle * scale]])
+        else:
+            raise ValueError("Invalid mirror axis. Please choose 'x', 'y', or 'none'.")
 
     def transform(self, vector):
         result = self.matrix @ vector.array_convert()
@@ -53,10 +60,11 @@ if __name__ == "__main__":
     batman_points = np.array([[0, 0], [1, 0.2], [0.4, 1], [0.5, 0.4], [0, 0.8], [-0.5, 0.4], [-0.4, 1], [-1, 0.2], [0, 0]])
     batman_shape = Shape(batman_points)
 
-    degrees = float(input("Enter the angle in degrees: "))
+    degrees = float(input("Enter the angle: "))
     scale = float(input("Enter the scaling factor: "))
+    mirror_axis = input("Enter the mirror axis ('x', 'y', or 'none'): ")
 
-    transformation_matrix = Matrix(degrees, scale)
+    transformation_matrix = Matrix(degrees, scale, mirror_axis)
 
     transformed_batman_shape = batman_shape.transform(transformation_matrix)
 
