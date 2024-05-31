@@ -15,11 +15,11 @@ class Vector:
 
 
 class Matrix:
-    def __init__(self, angle_deg):
+    def __init__(self, angle_deg, scale):
         angle_rad = np.deg2rad(angle_deg)
         cos_angle = np.cos(angle_rad)
         sin_angle = np.sin(angle_rad)
-        self.matrix = np.array([[cos_angle, -sin_angle], [sin_angle, cos_angle]])
+        self.matrix = np.array([[cos_angle * scale, -sin_angle * scale], [sin_angle * scale, cos_angle * scale]])
 
     def transform(self, vector):
         result = self.matrix @ vector.array_convert()
@@ -54,10 +54,11 @@ if __name__ == "__main__":
     batman_shape = Shape(batman_points)
 
     degrees = float(input("Enter the angle in degrees: "))
+    scale = float(input("Enter the scaling factor: "))
 
-    rotation_matrix = Matrix(degrees)
+    transformation_matrix = Matrix(degrees, scale)
 
-    transformed_batman_shape = batman_shape.transform(rotation_matrix)
+    transformed_batman_shape = batman_shape.transform(transformation_matrix)
 
     fig, ax = plt.subplots()
     batman_shape.plot(ax, color='yellow', label='Original')
