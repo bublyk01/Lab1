@@ -10,7 +10,7 @@ class Vector:
     def array_convert(self):
         return np.array([self.x, self.y])
 
-    def __linear__(self):
+    def linear(self):
         return f"Vector(x={self.x}, y={self.y})"
 
 
@@ -28,3 +28,19 @@ class Matrix:
 
     def __repr__(self):
         return f"Matrix(\n{self.matrix[0, 0]} {self.matrix[0, 1]}\n{self.matrix[1, 0]} {self.matrix[1, 1]}\n)"
+
+
+class Shape:
+    def __init__(self, points):
+        self.points = np.array(points)
+
+    def transform(self, matrix):
+        transformed_points = matrix.apply_to_points(self.points)
+        return Shape(transformed_points)
+
+    def plot(self, ax, **kwargs):
+        points = np.vstack([self.points, self.points[0]])
+        ax.plot(points[:, 0], points[:, 1], **kwargs)
+
+    def __repr__(self):
+        return f"Shape(points={self.points})"
