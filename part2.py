@@ -24,7 +24,6 @@ class Matrix:
         return cv2.warpAffine(image, self.matrix, (cols, rows))
 
 if __name__ == "__main__":
-    # Load the image
     image = cv2.imread('image.jpg')
 
     choice = input("Do you want to enter your own transformation matrix? ").strip().lower()
